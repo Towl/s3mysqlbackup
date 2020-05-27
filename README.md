@@ -36,12 +36,12 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: minio-backup-secrets
-                    key: minio_access_key
+                    key: access_key
               - name: MINIO_SECRET_KEY
                 valueFrom:
                   secretKeyRef:
                     name: minio-backup-secrets
-                    key: minio_access_secret
+                    key: access_secret
               - name: MYSQL_HOST
                 value: mysql.hostname
               - name: MYSQL_USER
