@@ -26,7 +26,7 @@ spec:
                 value: towl-wordpress-backups
               # The parent folder path in the bucket
               - name: PREFIX
-                value: tms
+                value: path
               # The lifespan in the S3
               - name: BACKUP_LIFESPAN
                 value: "7"
@@ -34,12 +34,12 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: aws-s3-backup-secrets
-                    key: aws_access_key
+                    key: access_key
               - name: AWS_SECRET_ACCESS_KEY
                 valueFrom:
                   secretKeyRef:
                     name: aws-s3-backup-secrets
-                    key: aws_access_secret
+                    key: access_secret
               - name: MYSQL_HOST
                 value: mysql.hostname
               - name: MYSQL_USER
