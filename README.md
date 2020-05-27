@@ -22,24 +22,26 @@ spec:
             command: ["./backup.sh"]
             env:
               # The bucket name
-              - name: AWS_ENDPOINT
+              - name: MINIO_ENDPOINT
                 value: towl-wordpress-backups
+              - name: BUCKET
+                value: bucket
               # The parent folder path in the bucket
               - name: PREFIX
-                value: tms
+                value: path
               # The lifespan in the S3
               - name: BACKUP_LIFESPAN
                 value: "7"
-              - name: AWS_ACCESS_KEY_ID
+              - name: MINIO_ACCESS_KEY
                 valueFrom:
                   secretKeyRef:
-                    name: aws-s3-backup-secrets
-                    key: aws_access_key
-              - name: AWS_SECRET_ACCESS_KEY
+                    name: minio-backup-secrets
+                    key: minio_access_key
+              - name: MINIO_SECRET_KEY
                 valueFrom:
                   secretKeyRef:
-                    name: aws-s3-backup-secrets
-                    key: aws_access_secret
+                    name: minio-backup-secrets
+                    key: minio_access_secret
               - name: MYSQL_HOST
                 value: mysql.hostname
               - name: MYSQL_USER

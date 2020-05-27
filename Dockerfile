@@ -1,7 +1,8 @@
 FROM alpine
 
-RUN apk add mysql-client pv coreutils
-RUN apk add aws-cli --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
+RUN apk add mysql-client pv coreutils wget
+RUN wgt https://dl.min.io/client/mc/release/linux-amd64/mc -O /bin
+RUN chmod a+x /bin/mc
 
 COPY backup.sh /root
 
