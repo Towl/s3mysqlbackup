@@ -29,8 +29,8 @@ spec:
               # The parent folder path in the bucket
               - name: PREFIX
                 value: path
-              # The lifespan in the S3
-              - name: BACKUP_LIFESPAN
+              # The Maximum number of backups stored in S3
+              - name: MAX_BACKUPS
                 value: "7"
               - name: MINIO_ACCESS_KEY
                 valueFrom:
