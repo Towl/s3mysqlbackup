@@ -1,0 +1,53 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wordpress-db-backup
+spec:
+  ttlSecondsAfterFinished: 259200
+  template:
+    spec:
+      serviceAccountName: backup-auto
+      containers:
+      - name: s3filesbackup
+        image: towl/s3filesbackup:gcloud
+        command: ["./backup.sh"]
+        env:
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: "/var/secrets/gcloud/creds.json"
+          - name: ARCHIVE_NAME
+            value: mysql-db
+          - name: BUCKET
+            value: my-bucket
+          - name: PREFIX
+            value: backups
+          - name: MYSQL_HOST
+            value: wordpress-mariadb.db
+          - name: MYSQL_USER
+            value: root
+          - name: MYSQL_DB
+            value: db
+          - name: MYSQL_PASS
+            valueFrom:
+              secretKeyRef:
+                key: mariadb-root-password
+                name: wordpress-mariadb
+        resources:
+          limits:
+            cpu: 250m
+            memory: 250M
+          requests:
+            cpu: 250m
+            memory: 250M
+        volumeMounts:
+          - name: gcloud-credentials
+            mountPath: "/var/secrets/gcloud"
+            readOnly: true
+      volumes:
+        - name: gcloud-credentials
+          secret:
+            secretName: gcloud-service-account
+            items:
+              - key: credentials
+                path: creds.json
+      restartPolicy: OnFailure

@@ -1,11 +1,9 @@
-FROM alpine
+FROM google/cloud-sdk
 
-RUN apk add mysql-client pv coreutils wget
-RUN wget -q https://dl.min.io/client/mc/release/linux-amd64/mc -O /bin/mc
-RUN chmod a+x /bin/mc
+RUN apt install -y default-mysql-client pv
 
-COPY backup.sh /root
+COPY backup.sh /tmp
 
-RUN chmod a+x /root/backup.sh
+RUN chmod a+x /tmp/backup.sh
 
-WORKDIR /root
+WORKDIR /tmp
