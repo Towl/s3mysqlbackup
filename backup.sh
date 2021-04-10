@@ -1,7 +1,4 @@
 #!/bin/bash
-echo "==> Authenticate to gcloud"
-gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
-
 VERSIONING_ENABLED=$(gsutil versioning get gs://$BUCKET/ | grep Enabled)
 BUCKET_ARCHIVE_NAME=$ARCHIVE_NAME.sql.gz
 if [ "$VERSIONING_ENABLED" == "" ];then
@@ -13,6 +10,6 @@ else
 fi
 
 echo "==> Generating dump in gs://$BUCKET/$PREFIX/$BUCKET_ARCHIVE_NAME"
-mysqldump --verbose --hex-blob --complete-insert --single-transaction --skip-lock-tables --skip-add-locks --routines -u$MYSQL_USER -h$MYSQL_HOST -p$MYSQL_PASS --databases $MYSQL_DB | ( pv -peartb | gzip - | gsutil cp - gs://$BUCKET/$PREFIX/$BUCKET_ARCHIVE_NAME )
+mysqldump --ssl --ssl-key=/etc/mysql/certs/client-key.pem --ssl-cert=/etc/mysql/certs/client-cert.pem --verbose --hex-blob --complete-insert --single-transaction --skip-lock-tables --skip-add-locks --routines -u$MYSQL_USER -h$MYSQL_HOST -p$MYSQL_PASS --databases $MYSQL_DB | ( pv -peartb | gzip - | gsutil cp - gs://$BUCKET/$PREFIX/$BUCKET_ARCHIVE_NAME )
 
 echo "==> Done"

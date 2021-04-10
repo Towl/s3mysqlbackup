@@ -1,8 +1,9 @@
-FROM google/cloud-sdk
+FROM google/cloud-sdk:alpine
 
-RUN apt install -y default-mysql-client pv
+RUN apk add mysql-client pv coreutils
 
 COPY backup.sh /tmp
+COPY restore.sh /tmp
 
 RUN chmod a+x /tmp/backup.sh
 
