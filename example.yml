@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: wordpress-db-backup
+  name: wordpress-db2-backup
 spec:
   ttlSecondsAfterFinished: 259200
   template:
@@ -10,7 +10,7 @@ spec:
       serviceAccountName: backup-auto
       containers:
       - name: s3filesbackup
-        image: towl/s3filesbackup:gcloud
+        image: towl/s3mysqlbackup:gcloud
         command: ["./backup.sh"]
         env:
           - name: GOOGLE_APPLICATION_CREDENTIALS
