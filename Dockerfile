@@ -1,5 +1,6 @@
 FROM google/cloud-sdk:alpine
 
+RUN apk update
 RUN apk add mysql-client pv coreutils
 
 COPY backup.sh /tmp
