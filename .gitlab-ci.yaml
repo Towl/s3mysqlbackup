@@ -1,0 +1,19 @@
+---
+variables:
+  GOOGLE_CLOUD_PROJECT: "warm-canto-276410"
+
+stages:
+  - build
+
+build_image:latest:
+  stage: build
+  tags:
+    - shell
+  before_script:
+    - gcloud container clusters get-credentials --zone=europe-west4-c --project=$GOOGLE_CLOUD_PROJECT tms-prod
+
+  script:
+    - ./push-image-latest.sh
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
